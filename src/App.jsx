@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import Schedule from "./pages/Schedule";
 import Rankings from "./pages/Rankings";
+import Settings from "./pages/Settings";
 import { useContests } from "./hooks/useContests";
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
           <Schedule contests={contestState.filtered} />
         )}
         {view === "rankings" && <Rankings />}
+        {view === "settings" && <Settings />}
       </main>
     </div>
   );
