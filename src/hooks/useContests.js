@@ -1,51 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 
-/* ================= CACHE + RATE LIMIT HELPERS ================= */
-
-const CACHE_KEY = "clist:upcomingContests";
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
-
-let lastApiCall = 0;
-const RATE_LIMIT_MS = 2000;
-
-const getCache = () => {
-    const raw = localStorage.getItem(CACHE_KEY);
-    if (!raw) return null;
-
-    try {
-        const { data, expiry } = JSON.parse(raw);
-        if (Date.now() > expiry) {
-            localStorage.removeItem(CACHE_KEY);
-            return null;
-        }
-        return data;
-    } catch {
-        localStorage.removeItem(CACHE_KEY);
-        return null;
-    }
-};
-
-const setCache = (data) => {
-    localStorage.setItem(
-        CACHE_KEY,
-        JSON.stringify({
-            data,
-            expiry: Date.now() + CACHE_TTL,
-        })
-    );
-};
-
-const rateLimit = async () => {
-    const now = Date.now();
-    const diff = now - lastApiCall;
-    if (diff < RATE_LIMIT_MS) {
-        await new Promise((r) => setTimeout(r, RATE_LIMIT_MS - diff));
-    }
-    lastApiCall = Date.now();
-};
-
-/* ===================== MAIN HOOK ===================== */
-
 export const useContests = () => {
     const [contests, setContests] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -58,28 +12,21 @@ export const useContests = () => {
     const CODING_RESOURCES =
         "1,2,12,25,26,29,63,65,73,93,102,117,120,126,164,179,240,324";
 
-    const fetchContests = async (forceRefresh = false) => {
+    const fetchContests = async () => {
         setLoading(true);
-
         try {
-            if (!forceRefresh) {
-                const cached = getCache();
-                if (cached) {
-                    setContests(cached);
-                    setLoading(false);
-                    return;
+            const response = await fetch(
+                `https://clist.by/api/v4/contest/?upcoming=true&resource_ids=${CODING_RESOURCES}&order_by=start`,
+                {
+                    headers: {
+                        Authorization: `ApiKey ${CLIST_USER}:${CLIST_KEY}`,
+                    },
                 }
+            );
+
+            if (!response.ok) {
+                throw new Error("CLIST API failed");
             }
-
-            await rateLimit();
-
-            const url = `https://clist.by/api/v4/contest/?upcoming=true&resource_ids=${CODING_RESOURCES}&order_by=start`;
-
-            const response = await fetch(url, {
-                headers: {
-                    Authorization: `ApiKey ${CLIST_USER}:${CLIST_KEY}`,
-                },
-            });
 
             const data = await response.json();
 
@@ -128,9 +75,9 @@ export const useContests = () => {
                 }));
 
             setContests(formatted);
-            setCache(formatted);
         } catch (err) {
-            console.error("CLIST fetch failed:", err);
+            console.error(err);
+            setContests([]);
         } finally {
             setLoading(false);
         }
@@ -160,7 +107,9 @@ export const useContests = () => {
         platforms: ["All", "Codeforces", "LeetCode", "CodeChef", "AtCoder", "Naukri"],
         activePlatform,
         setActivePlatform,
+        searchQuery,
         setSearchQuery,
         fetchContests,
     };
 };
+

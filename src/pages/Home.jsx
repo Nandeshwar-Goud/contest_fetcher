@@ -1,9 +1,9 @@
 import HomeHeader from "../components/home/HomeHeader";
 import PlatformFilters from "../components/home/PlatformFilters";
 import ContestGrid from "../components/home/ContestGrid";
-import { useContests } from "../hooks/useContests";
 
-const Home = () => {
+
+const Home = ({ contestState }) => {
     const {
         filtered,
         loading,
@@ -12,11 +12,12 @@ const Home = () => {
         setActivePlatform,
         setSearchQuery,
         fetchContests,
-    } = useContests();
+    } = contestState;
 
     return (
         <div className="p-6 lg:p-10">
             <HomeHeader
+
                 setSearchQuery={setSearchQuery}
                 fetchContests={fetchContests}
                 loading={loading}
