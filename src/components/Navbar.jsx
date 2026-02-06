@@ -13,9 +13,10 @@ const Navbar = () => {
     return (
         <nav className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen sticky top-0">
             <div className="p-6 flex items-center gap-3">
-                <div className="bg-blue-600 p-2 rounded-lg">
+                {/* <div className="bg-blue-600 p-2 rounded-lg">
                     <Terminal size={24} className="text-white" />
-                </div>
+                </div> */}
+                <img src="/logo.svg" alt="Logo" className="w-10 h-10" />
                 <span className="text-xl font-bold tracking-tight text-white">BitWiseBeast</span>
             </div>
 
