@@ -1,0 +1,49 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { LayoutDashboard, Calendar, Trophy, Settings, Terminal } from 'lucide-react';
+
+const Navbar = () => {
+    const navItems = [
+        { icon: <LayoutDashboard size={20} />, label: 'Dashboard', active: true },
+        { icon: <Calendar size={20} />, label: 'Schedule', active: false },
+        { icon: <Trophy size={20} />, label: 'Rankings', active: false },
+        { icon: <Settings size={20} />, label: 'Settings', active: false },
+    ];
+
+    return (
+        <nav className="w-full md:w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen sticky top-0">
+            <div className="p-6 flex items-center gap-3">
+                <div className="bg-blue-600 p-2 rounded-lg">
+                    <Terminal size={24} className="text-white" />
+                </div>
+                <span className="text-xl font-bold tracking-tight text-white">BitWiseBeast</span>
+            </div>
+
+            <div className="flex-1 px-4 py-4 space-y-2">
+                {navItems.map((item, idx) => (
+                    <motion.div
+                        key={idx}
+                        whileHover={{ x: 5 }}
+                        className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors ${item.active ? 'bg-green-600/10 text-green-400' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                            }`}
+                    >
+                        {item.icon}
+                        <span className="font-medium">{item.label}</span>
+                    </motion.div>
+                ))}
+            </div>
+
+            <div className="p-4 border-t border-slate-800">
+                <div className="bg-slate-800/50 p-4 rounded-xl">
+                    <p className="text-xs text-slate-500 uppercase font-bold mb-1">Status</p>
+                    <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                        <span className="text-sm text-slate-300 font-medium">Systems Nominal</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
+};
+
+export default Navbar;
