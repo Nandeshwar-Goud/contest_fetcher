@@ -9,7 +9,7 @@ import { useContests } from "./hooks/useContests";
 const App = () => {
   const [view, setView] = useState("dashboard");
 
-  // SINGLE SOURCE OF TRUTH
+
   const contestState = useContests();
 
   return (

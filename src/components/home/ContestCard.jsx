@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Clock, ExternalLink, Trophy, Globe } from "lucide-react";
+import { formatIST } from "../../utils/time";
 
 const ContestCard = ({ contest }) => (
     <motion.div
@@ -30,12 +31,7 @@ const ContestCard = ({ contest }) => (
             <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 uppercase tracking-tighter">
                 <div className="flex items-center gap-2">
                     <Clock size={12} className="text-blue-500" />
-                    {new Date(contest.start).toLocaleString("en-IN", {
-                        day: "2-digit",
-                        month: "short",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                    })}
+                    {formatIST(contest.start)}
                 </div>
                 <span>{contest.duration} Hours</span>
             </div>

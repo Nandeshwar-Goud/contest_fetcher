@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, ChevronRight, Bell } from 'lucide-react';
+import { formatIST } from '../utils/time';
 
 const Schedule = ({ contests = [] }) => {
+
     // Function to calculate relative time
     const getRelativeTime = (startDate) => {
         const now = new Date();
@@ -35,7 +37,7 @@ const Schedule = ({ contests = [] }) => {
 
             <div className="space-y-6">
                 {contests.length > 0 ? (
-                    contests.slice(0, 8).map((contest, idx) => (
+                    contests.map((contest, idx) => (
                         <motion.div
                             key={contest.id}
                             initial={{ opacity: 0, x: -20 }}
@@ -46,12 +48,16 @@ const Schedule = ({ contests = [] }) => {
                             {/* Timeline Line & Dot */}
                             <div className="flex flex-col items-center">
                                 <div className="w-3 h-3 rounded-full bg-blue-600 shadow-[0_0_8px_#3b82f6] group-hover:scale-125 transition-transform"></div>
-                                {idx !== 7 && <div className="w-[2px] h-20 bg-slate-800 group-hover:bg-blue-900/50 transition-colors"></div>}
+                                {idx !== 7 && (
+                                    <div className="w-[2px] h-20 bg-slate-800 group-hover:bg-blue-900/50 transition-colors"></div>
+                                )}
                             </div>
 
                             {/* Content Card */}
                             <div className="flex-1 bg-slate-800/20 border border-slate-800/40 p-5 rounded-2xl group-hover:border-blue-500/30 transition-all hover:bg-slate-800/40">
                                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+
+                                    {/* Left Content */}
                                     <div className="space-y-1">
                                         <span className="text-[10px] font-black text-blue-500 uppercase tracking-widest">
                                             {contest.site.split('.')[0]}
@@ -61,26 +67,49 @@ const Schedule = ({ contests = [] }) => {
                                         </h4>
                                     </div>
 
+                                    {/* Right Content */}
                                     <div className="flex items-center gap-6">
                                         <div className="text-right">
-                                            <p className="text-xs font-mono text-slate-400">{getRelativeTime(contest.start)}</p>
+                                            {/* Relative Time */}
+                                            <p className="text-xs font-mono text-slate-400">
+                                                {getRelativeTime(contest.start)}
+                                            </p>
+
+                                            {/* IST Time */}
+                                            <p className="text-[10px] text-slate-500 font-mono">
+                                                {formatIST(contest.start)} IST
+                                            </p>
+
+                                            {/* Duration */}
                                             <p className="text-[10px] text-slate-600 flex items-center justify-end gap-1">
                                                 <Clock size={10} /> {contest.duration}H Session
                                             </p>
                                         </div>
+
+                                        {/* Reminder Button */}
                                         <button className="p-2 bg-slate-900 rounded-lg text-slate-500 hover:text-white hover:bg-blue-600 transition-all">
                                             <Bell size={16} />
                                         </button>
-                                        <a href={contest.url} target="_blank" className="text-slate-600 hover:text-blue-400">
+
+                                        {/* External Link */}
+                                        <a
+                                            href={contest.url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="text-slate-600 hover:text-blue-400"
+                                        >
                                             <ChevronRight size={20} />
                                         </a>
                                     </div>
+
                                 </div>
                             </div>
                         </motion.div>
                     ))
                 ) : (
-                    <p className="text-slate-500 italic text-center py-10">No upcoming events in timeline.</p>
+                    <p className="text-slate-500 italic text-center py-10">
+                        No upcoming events in timeline.
+                    </p>
                 )}
             </div>
         </div>

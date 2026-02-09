@@ -59,7 +59,8 @@ export const useContests = () => {
                         host.includes("cup") ||
                         host.includes("datsteam") ||
                         host.includes("ctftime") ||
-                        host.includes("ac")
+                        host.includes("ac") || host.includes("azspcs") ||
+                        host.includes("competesai") || host.includes("dl")
                     )
                         return false;
 
