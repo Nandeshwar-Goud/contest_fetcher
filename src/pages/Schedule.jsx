@@ -3,6 +3,9 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, ChevronRight, Bell } from 'lucide-react';
 import { formatIST } from '../utils/time';
 
+import { addToCalendar } from '../utils/calendar';
+
+
 const Schedule = ({ contests = [] }) => {
 
     // Function to calculate relative time
@@ -87,7 +90,9 @@ const Schedule = ({ contests = [] }) => {
                                         </div>
 
                                         {/* Reminder Button */}
-                                        <button className="p-2 bg-slate-900 rounded-lg text-slate-500 hover:text-white hover:bg-blue-600 transition-all">
+                                        <button onClick={() => addToCalendar(contest)}
+                                            className="p-2 bg-slate-900 rounded-lg text-slate-500 hover:text-white hover:bg-blue-600 transition-all"
+                                            title="Add to Calendar">
                                             <Bell size={16} />
                                         </button>
 
