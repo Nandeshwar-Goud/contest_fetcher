@@ -20,7 +20,7 @@ const openGoogleCalendar = (contest) => {
     const startStr = formatGoogleDate(start);
     const endStr = formatGoogleDate(end);
 
-    const text = encodeURIComponent(contest.name);
+    const text = encodeURIComponent(contest.name + (contest.host ? ` (${contest.host})` : ""));
     const details = encodeURIComponent(`Contest Link: ${contest.url}`);
     const location = encodeURIComponent(contest.site);
 
