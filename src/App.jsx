@@ -13,21 +13,17 @@ const App = () => {
   const contestState = useContests();
 
   return (
-    <div className="flex min-h-screen bg-[#020617] text-slate-100 font-sans selection:bg-blue-500/30">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#020617] text-slate-100">
       <Navbar setView={setView} currentView={view} />
 
-      <main className="flex-1 h-screen overflow-y-auto">
-        {view === "dashboard" && (
-          <Home contestState={contestState} />
-        )}
-
-        {view === "schedule" && (
-          <Schedule contests={contestState.filtered} />
-        )}
-        {view === "rankings" && <Rankings />}
-        {view === "settings" && <Settings />}
+      <main className="flex-1 overflow-y-auto">
+        {view === 'dashboard' && <Home contestState={contestState} />}
+        {view === 'schedule' && <Schedule contests={contestState.filtered} />}
+        {view === 'rankings' && <Rankings />}
+        {view === 'settings' && <Settings />}
       </main>
     </div>
+
   );
 };
 
